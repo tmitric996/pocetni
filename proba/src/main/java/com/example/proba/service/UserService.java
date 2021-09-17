@@ -2,8 +2,8 @@ package com.example.proba.service;
 
 import java.util.List;
 
+import com.example.proba.dto.UserRequest;
 import com.example.proba.model.User;
-import com.example.proba.request.UserRequest;
 
 public interface UserService {
 

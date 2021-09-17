@@ -5,6 +5,8 @@ import javax.persistence.*;
 
 import org.springframework.security.core.GrantedAuthority;
 
+import com.example.proba.model.enums.Roles;
+
 import lombok.Data;
 
 @Entity
@@ -17,11 +19,11 @@ public class Role implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;	
 	
-	private String role;
+	private Roles role;
 	
 	@Override
 	public String getAuthority() {
-		return role;
+		return role.toString();
 	}
 	
 

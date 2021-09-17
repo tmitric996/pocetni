@@ -1,4 +1,4 @@
-package com.example.proba.security.auth;
+package com.example.proba.config;
 
 import java.io.IOException;
 
@@ -11,8 +11,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import com.example.proba.security.TokenUtils;
 
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 

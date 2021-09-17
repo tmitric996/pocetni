@@ -14,10 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.proba.dto.UserRequest;
 import com.example.proba.model.User;
-import com.example.proba.request.UserRequest;
 import com.example.proba.service.UserService;
-import com.example.proba.serviceImpl.UserServiceImpl;
 
 @RestController
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)

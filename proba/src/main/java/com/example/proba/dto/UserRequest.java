@@ -1,4 +1,4 @@
-package com.example.proba.request;
+package com.example.proba.dto;
 
 import lombok.Data;
 

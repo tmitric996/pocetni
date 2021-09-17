@@ -1,4 +1,4 @@
-package com.example.proba.security.auth;
+package com.example.proba.config;
 
 import java.io.IOException;
 

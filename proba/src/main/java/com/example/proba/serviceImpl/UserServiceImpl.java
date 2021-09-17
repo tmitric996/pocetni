@@ -3,14 +3,14 @@ package com.example.proba.serviceImpl;
 import java.util.List;
 import java.util.Set;
 
-import org.hibernate.mapping.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.proba.dto.UserRequest;
 import com.example.proba.model.*;
+import com.example.proba.model.enums.Roles;
 import com.example.proba.repository.*;
-import com.example.proba.request.UserRequest;
 import com.example.proba.service.*;
 
 @Service
@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService{
 		user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
 		
 		
-		Set<Role> auth = roleService.findAllByRole("user");
+		Set<Role> auth = roleService.findAllByRole(Roles.ROLE_USER);
 		user.setAuthorities(auth);
 		return userRepository.save(user);
 	}

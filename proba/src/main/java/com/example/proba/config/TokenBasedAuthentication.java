@@ -1,4 +1,4 @@
-package com.example.proba.security.auth;
+package com.example.proba.config;
 
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -30,6 +30,10 @@ public class TokenBasedAuthentication extends AbstractAuthenticationToken {
 	@Override
 	public UserDetails getPrincipal() {
 		return principle;
+	}
+	@Override
+	public boolean isAuthenticated() {
+		return true;
 	}
 
 }

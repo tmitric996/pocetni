@@ -1,4 +1,4 @@
-package com.example.proba.security;
+package com.example.proba.config;
 
 import java.util.Date;
 
@@ -30,13 +30,14 @@ public class TokenUtils {
 	@Autowired
 	private UserRepository userRepository;
 
-	private static final String AUDIENCE_WEB = "web";
+	//private static final String AUDIENCE_WEB = "web";
 	
 	private SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS512;
 	
 	public String generateToken(String email) {
 		
 		User user = userRepository.findByEmail(email);
+		System.out.println(user.getAuthorities().toString());
 		return Jwts.builder()
 				.setIssuer(APP_NAME)
 				.setSubject(email)
@@ -83,9 +84,9 @@ public class TokenUtils {
 	}
 
 	public Boolean validateToken(String token, UserDetails userDetails) {
-		User user = (User) userDetails;
+		//User user = (User) userDetails;
 		final String username = getUsernameFromToken(token);
-		final Date created = getIssuedAtDateFromToken(token);
+		//final Date created = getIssuedAtDateFromToken(token);
 		
 		return (username != null && username.equals(userDetails.getUsername()));
 		//ako se doda menjanje sifri mora ici provera tokena da li je validan, 

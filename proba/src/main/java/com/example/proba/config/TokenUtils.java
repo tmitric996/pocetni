@@ -95,14 +95,15 @@ public class TokenUtils {
 	}
 
 	public String getUsernameFromToken(String token) {
-		String username;
+		String email;
 		try {
 			final Claims claims = this.getAllClaimsFromToken(token);
-			username = claims.getSubject();
+			email = claims.getSubject();
 		} catch (Exception e) {
-			username = null;
+			System.out.println(e);
+			email = null;
 		}
-		return username;
+		return email;
 	}
 
 	public Date getIssuedAtDateFromToken(String token) {

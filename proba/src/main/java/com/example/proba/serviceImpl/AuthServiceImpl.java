@@ -38,10 +38,14 @@ public class AuthServiceImpl {
 		SecurityContextHolder.getContext().setAuthentication(auth);
 		
 		User user = (User) auth.getPrincipal();
-		String jwt = tokenUtils.generateToken(user.getEmail());
-		Long expiresIn = Long.parseLong(Integer.toString(tokenUtils.getExpiredIn()));
-		
-		return ResponseEntity.ok(new LoginResponse(jwt, expiresIn));
+		if (!user.isEnabled()){
+			return (ResponseEntity<LoginResponse>) ResponseEntity.badRequest();
+		} else {
+			String jwt = tokenUtils.generateToken(user.getEmail());
+			Long expiresIn = Long.parseLong(Integer.toString(tokenUtils.getExpiredIn()));
+
+			return ResponseEntity.ok(new LoginResponse(jwt, expiresIn));
+		}
 	}
 
 	public ResponseEntity<User> register(UserRequest userRequest, UriComponentsBuilder ucBuilder) {
@@ -56,6 +60,13 @@ public class AuthServiceImpl {
 		return new ResponseEntity<>(user, HttpStatus.CREATED);
 	}
 
-	
-	
+
+	public User getCurrentUSerByToken(String token) {
+		System.out.println(token);
+		String email = tokenUtils.getUsernameFromToken(token);
+		System.out.println(email);
+		User user = userService.findByEmail(email);
+		return user;
+	}
+
 }

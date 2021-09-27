@@ -29,6 +29,8 @@ public class User implements UserDetails{
     private String lastName;
     
     private String email;
+
+	private boolean enabled; //da li je odobren od strane admina
     
     @ManyToMany(cascade ={CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
@@ -68,7 +70,7 @@ public class User implements UserDetails{
 
 	@Override
 	public boolean isEnabled() {
-		return true;
+		return enabled;
 	}
 	
 }

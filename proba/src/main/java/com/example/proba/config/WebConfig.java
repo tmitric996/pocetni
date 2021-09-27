@@ -18,25 +18,21 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 @Configuration
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
 	
 	@Bean
 	public CorsFilter corsFilter() {
-		final CorsConfiguration config = new CorsConfiguration();
-		config.setAllowCredentials(true);
-		config.addAllowedOrigin("*");
-		config.addAllowedHeader("*");
-		config.addAllowedMethod(GET);
-		config.addAllowedMethod(PUT);
-		config.addAllowedMethod(POST);
-		config.addAllowedMethod(PATCH);
-		config.addAllowedMethod(DELETE);
-		config.addAllowedMethod(OPTIONS);
-		config.setMaxAge((long) 3600000);
-		
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		CorsConfiguration config = new CorsConfiguration();
+		config.setAllowCredentials(true);
+		config.setAllowedOriginPatterns(Collections.singletonList("*"));
+		config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "responseType", "Authorization"));
+		config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH"));
 		source.registerCorsConfiguration("/**", config);
 		return new CorsFilter(source);
 	 }	
@@ -44,7 +40,7 @@ public class WebConfig implements WebMvcConfigurer {
 	
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("*").allowedOrigins("http://localhost:4200");
+		registry.addMapping("*").allowedOrigins("http://localhost:3000");
 	}
 
 	@Override

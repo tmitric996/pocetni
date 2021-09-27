@@ -3,6 +3,7 @@ package com.example.proba.serviceImpl;
 import java.util.List;
 import java.util.Set;
 
+import com.example.proba.dto.EnableUserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class UserServiceImpl implements UserService{
 		user.setFirstName(userRequest.getFirstName());
 		user.setLastName(userRequest.getLastName());
 		user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-		
+		user.setEnabled(false);
 		
 		Set<Role> auth = roleService.findAllByRole(Roles.ROLE_USER);
 		user.setAuthorities(auth);
@@ -70,7 +71,20 @@ public class UserServiceImpl implements UserService{
 		return;
 		
 	}
+	@Override
+	public User enableUser(String userId) {
+		System.out.println(userId);
+		User u = userRepository.findById(Long.parseLong(userId)).orElse(null);
+		u.setEnabled(true);
+		userRepository.save(u);
+		return u;
+	}
 
+	@Override
+	public List<User> getAllForEnable() {
+
+		return userRepository.findAllByEnabled(false);
+	}
 
 
 }

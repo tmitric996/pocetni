@@ -23,10 +23,12 @@ class Home extends Component {
       number: "",
       favorte: false,
       usersForEnable: [],
-      file: "",
+      file: [],
       open: false,
       contact: {},
       id: "",
+      fileURL: [],
+      image: ""
     };
     this.handlerNewContact = this.handlerNewContact.bind(this);
     this.onChangeNumber = this.onChangeNumber.bind(this);
@@ -39,6 +41,7 @@ class Home extends Component {
     this.deleteUser=this.deleteUser.bind(this);
     this.uploadPic=this.uploadPic.bind(this);
     this.editContact=this.editContact.bind(this);
+    this.showImage=this.showImage.bind(this);
   }
   editContact(e){
     e.preventDefault();
@@ -49,7 +52,7 @@ class Home extends Component {
       lastName: res.data.lastName,
       nickName: res.data.nickName,
       number: res.data.number[0].number,
-      favorite: res.data.favorite,
+      favorte: res.data.favorite,
       id: res.data.id,
 
     });
@@ -65,10 +68,21 @@ class Home extends Component {
   }
   uploadPic(e){
     e.preventDefault();
-  
-    this.setState({file: e.target.files[0]});
-    console.log(e.target.files[0]);
+    console.log(e.target.files[0])
+    let file = [];
+    file.push(e.target.files[0])
+    this.setState({file: file,
+      fileURL : URL.createObjectURL(e.target.files[0])});
+    console.log(URL.createObjectURL(e.target.files[0]));
+    console.log(this.state.file);
   }
+  showImage= () => {
+    this.setState({
+      
+      image: this.state.fileURL
+    });
+  };
+
   componentDidMount(){
     this.setState({admin : false, user : false});
     AuthService.getCurrentUser().then((res) => {
@@ -94,16 +108,23 @@ class Home extends Component {
   }
   handlerNewContact(e){
     e.preventDefault();
+    console.log(this.state.file)
     if (this.state.id===""){
-    const data = {
-      name : this.state.name,
-      lastName: this.state.lastName,
-      nickName : this.state.nickName,
-      number : [{number: this.state.number}],
-      favorite : this.state.favorte,
-      picture : null,
-      email : localStorage.getItem("email"),
-    }
+      let data = new FormData();
+      data.append("name",this.state.name );
+      data.append("lastName",this.state.lastName );
+      data.append("nickName",this.state.nickName );
+      data.append("number",this.state.number );
+      data.append("favorite",this.state.favorte );
+      this.state.file.forEach((i) => {
+        
+        data.append("picture", i);
+      });
+     // data.append("picture",this.state.file);
+      data.append("email",localStorage.getItem("email") );
+      console.log(data);
+
+    
     ContactService.createContact(data).then((res)=>{
       console.log(res);
     });}
@@ -115,14 +136,16 @@ class Home extends Component {
         nickName : this.state.nickName,
         number : [{number: this.state.number}],
         favorite : this.state.favorte,
-        picture : null,
+        picture : this.state.file,
         user : this.state.currentUser,
         id : this.state.id 
       }
       ContactService.save(data).then((res)=>{
         console.log(res);
       });}
-    window.location.reload();
+     window.location.reload();
+    console.log(this.state.file);
+
   }
 
   eableUser(e){
@@ -154,10 +177,9 @@ class Home extends Component {
   }
  
    onChangeFavorite(e){
-    if (this.state.favorte===true){
-    this.setState({favorte: false});}else {
-      this.setState({favorte: true});
-    }
+    
+    this.setState({favorte: !this.state.favorte});
+    
   }
   deleteContact(e){
     e.preventDefault();
@@ -224,7 +246,7 @@ class Home extends Component {
                      type="checkbox"
                     className="form-control"
                     name="favorite"
-                    value={this.state.favorite}
+                    value={this.state.favorte}
                     onChange={this.onChangeFavorite}
                   />
                 </div>
@@ -239,6 +261,13 @@ class Home extends Component {
                             onChange={this.uploadPic}
                           />
                         </div>
+                        <div>
+                          <img
+                          width={250}
+                          height={140}
+                          src={this.state.fileURL}
+                          ></img>
+                        </div>
                 
               </div>
               <div className="form-group">
@@ -251,17 +280,26 @@ class Home extends Component {
             <hr />
           {this.state.myContacts.map((i) => {
             console.log(i);
-            console.log(i.number[0].number);
+            console.log(`data:image/jpeg;base64,${i.picture}`);
             const id = i.id;
             var divs = (
               <div key={i.id} className="thumbnail">
                 <div className="center_card">
                   { i.favorite ?
-                   (<h3><StarIcon></StarIcon> {i.name} {i.lastName} {i.nickName} {i.number[0].number}
+                   (<h3><StarIcon></StarIcon> <img
+                    width={50}
+                    height={50}
+                    src={`data:image/jpeg;base64,${i.picture}`}
+                    ></img>{i.name} {i.lastName} {i.nickName} {i.number[0].number}
+                    
                     <button value={i.id} onClick={this.deleteContact}> Delete</button>
                     <button value={i.id} onClick={this.editContact}> Edit</button></h3>)
-                    :(<h3><StarBorderIcon></StarBorderIcon> {i.name} {i.lastName} {i.nickName} {i.number[0].number} 
-                     <button value={i.id} onClick={this.deleteContact}> Delete</button>
+                    :(<h3><StarBorderIcon></StarBorderIcon><img
+                      width={50}
+                      height={50}
+                      src={`data:image/jpeg;base64,${i.picture}`}
+                      ></img> {i.name} {i.lastName} {i.nickName} {i.number[0].number} 
+                    <button value={i.id} onClick={this.deleteContact}> Delete</button>
                      <button value={i.id} onClick={this.editContact}> Edit</button></h3>)}
                   
                 </div>

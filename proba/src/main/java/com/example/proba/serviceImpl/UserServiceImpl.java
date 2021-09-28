@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.example.proba.dto.EnableUserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,8 @@ import com.example.proba.model.enums.Roles;
 import com.example.proba.repository.*;
 import com.example.proba.service.*;
 
+import javax.mail.MessagingException;
+
 @Service
 public class UserServiceImpl implements UserService{
 
@@ -21,7 +24,9 @@ public class UserServiceImpl implements UserService{
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+
+	@Autowired
+	MailServiceImpl emailService;
 	@Autowired
 	UserRepository userRepository;
 	
@@ -77,6 +82,18 @@ public class UserServiceImpl implements UserService{
 		User u = userRepository.findById(Long.parseLong(userId)).orElse(null);
 		u.setEnabled(true);
 		userRepository.save(u);
+		try {
+			emailService.sendNotificaitionAsync(u.getFirstName(), u.getEmail());
+		} catch (MailException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return u;
 	}
 

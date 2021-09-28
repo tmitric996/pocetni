@@ -13,7 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +42,7 @@ public class ContactServiceImpl implements ContactService {
         return contactRepository.findAllByUserAndFavorite(userRepository.findByEmail(email), true);
     }
 
-    public Contact addContact(ContactRequest contactRequest) {
+    public Contact addContact(ContactRequest contactRequest) throws IOException {
 
         User u =userRepository.findByEmail(contactRequest.getEmail());
         Contact contact = new Contact();
@@ -56,7 +60,11 @@ public class ContactServiceImpl implements ContactService {
             numbers.add(num);
         }
         contact.setNumber(numbers);
-        contact.setPicture(contactRequest.getPicture());
+        MultipartFile f = contactRequest.getPicture();
+        System.out.println(f);
+
+        System.out.println(f.getBytes());
+        contact.setPicture(f.getBytes());
         contact.setNickName(contactRequest.getNickName());
         return contactRepository.save(contact);
 
@@ -81,5 +89,30 @@ public class ContactServiceImpl implements ContactService {
 
     public Contact findContactById(String id) {
       return contactRepository.findById(Long.parseLong(id)).orElse(null);
+    }
+
+    public Contact addContact(String email, String name, String lastName, String nickName, boolean favorite, String number, MultipartFile[] picture) {
+        Contact c = new Contact();
+        c.setFavorite(favorite);
+        c.setName(name);
+        c.setLastName(lastName);
+        c.setNickName(nickName);
+        User u = userRepository.findByEmail(email);
+        c.setUser(u);
+        Number num = new Number();
+        num.setNumber(number);
+        numberRepository.save(num);
+        List<Number> numbers = new ArrayList<>();
+        numbers.add(num);
+        c.setNumber(numbers);
+
+        try {
+            for ( final MultipartFile file : picture ){
+            c.setPicture(file.getBytes());}
+        } catch (IOException e) {
+            System.out.println("usao u exception");
+            e.printStackTrace();
+        }
+        return contactRepository.save(c);
     }
 }

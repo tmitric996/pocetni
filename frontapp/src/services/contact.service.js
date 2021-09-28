@@ -11,7 +11,15 @@ class ContactService {
 
     async createContact(data){
         console.log(data);
-        return await axios.post(API_URL + "contact", data)
+        return await axios.post(API_URL + "contact", data, {
+            params: {
+              
+            },
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          })
     }
     async deleteContact(data){
         console.log(data);
@@ -21,6 +29,7 @@ class ContactService {
         return await axios.get(API_URL+`contact/${data}`, { params :{},headers });
     }
     async save(data){
+        console.log(data);
         return await axios.put(API_URL+`contact`, data);
     }
 

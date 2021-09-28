@@ -27,5 +27,6 @@ public class Contact {
             inverseJoinColumns = @JoinColumn(name = "number_id", referencedColumnName = "id"))
     private List<Number> number;
     //private String number;
+    @Lob
     private byte[] picture;
 }

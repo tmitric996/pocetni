@@ -1,11 +1,13 @@
 package com.example.proba.controller;
 
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import com.example.proba.dto.ContactRequest;
 import com.example.proba.dto.EnableUserRequest;
+import com.example.proba.dto.NumberRequest;
 import com.example.proba.model.Contact;
 import com.example.proba.serviceImpl.ContactServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.proba.dto.UserRequest;
 import com.example.proba.model.User;
 import com.example.proba.service.UserService;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -83,9 +86,14 @@ public class UserController {
 		return contactSevice.findAllFavoritesByUser(email);
 	}
 	@PostMapping("/contact")
-	public Contact add(@RequestBody ContactRequest contact){
+	public Contact add( @RequestParam String name,
+					   	@RequestParam String lastName,@RequestParam String nickName,
+					   	@RequestParam String number,@RequestParam boolean favorite,
+						@RequestParam("picture") final MultipartFile[] picture,
+						@RequestParam String email) throws IOException {
+		System.out.println(picture[0]);
 		System.out.println("usao u contactuser controler");
-		return  contactSevice.addContact(contact);
+		return  contactSevice.addContact(email, name, lastName, nickName, favorite, number, picture);
 	}
 	@PutMapping("/contact")
 	public Contact add(@RequestBody Contact contact){

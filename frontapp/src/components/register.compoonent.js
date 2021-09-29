@@ -1,7 +1,4 @@
 import React, { Component } from "react";
-import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
-import CheckButton from "react-validation/build/button";
 import AuthService from "../services/auth.service";
 
 class Register extends Component {
@@ -45,7 +42,7 @@ class Register extends Component {
   handleRegister(e) {
     e.preventDefault();
 
-    if (this.checkBtn.context._errors.length === 0) {
+    if (true) {
       AuthService.register(
         this.state.email,
         this.state.password,
@@ -54,6 +51,7 @@ class Register extends Component {
       ).then(
         (response) => {
           console.log(response);
+          window.location.href = "http://localhost:3000/";
         },
         (error) => {
           const resMessage =
@@ -69,79 +67,76 @@ class Register extends Component {
 
   render() {
     return (
-      <div className="col-md-12">
-        <div className="card card-container">
-          <img
-            src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-            alt="profile-img"
-            className="profile-img-card"
-          />
-
-          <Form
-            onSubmit={this.handleRegister}
-            ref={(c) => {
-              this.form = c;
-            }}
-          >
-            {
-              <div>
-                <div className="form-group">
-                  <label htmlFor="email">Email</label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    name="email"
-                    value={this.state.email}
-                    onChange={this.onChangeEmail}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="password">Password</label>
-                  <Input
-                    type="password"
-                    className="form-control"
-                    name="password"
-                    value={this.state.password}
-                    onChange={this.onChangePassword}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="firstName">First name</label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    name="firstName"
-                    value={this.state.firstName}
-                    onChange={this.onChangeFirstName}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="lastName">Last name</label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    name="lastName"
-                    value={this.state.lastName}
-                    onChange={this.onChangeLastName}
-                  />
-                </div>
-                <div className="form-group">
-                  <button className="btn btn-primary btn-block">Sign Up</button>
-                </div>
+      <div id="layoutAuthentication">
+      <div id="layoutAuthentication_content">
+          <main>
+              <div class="container">
+                  <div class="row justify-content-center">
+                      <div class="col-lg-7">
+                          <div class="card shadow-lg border-0 rounded-lg mt-5">
+                              <div class="card-header"><h3 class="text-center font-weight-light my-4">Create Account</h3></div>
+                              <div class="card-body">
+                                  <form>
+                                      <div class="row mb-3">
+                                          <div class="col-md-6">
+                                              <div class="form-floating mb-3 mb-md-0">
+                                                  <input class="form-control" id="inputFirstName" type="text" 
+                                                  name="firstName"
+                                                  value={this.state.firstName}
+                                                  onChange={this.onChangeFirstName}
+                                                  placeholder="Enter your first name" />
+                                                  <label for="inputFirstName">First name</label>
+                                              </div>
+                                          </div>
+                                          <div class="col-md-6">
+                                              <div class="form-floating">
+                                                  <input class="form-control" id="inputLastName" type="text" 
+                                                   name="lastName"
+                                                   value={this.state.lastName}
+                                                   onChange={this.onChangeLastName}
+                                                  placeholder="Enter your last name" />
+                                                  <label for="inputLastName">Last name</label>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="form-floating mb-3">
+                                          <input class="form-control" id="inputEmail" type="email" 
+                                           name="email"
+                                           value={this.state.email}
+                                           onChange={this.onChangeEmail}
+                                          placeholder="name@example.com" />
+                                          <label for="inputEmail">Email address</label>
+                                      </div>
+                                      <div class="row mb-3">
+                                          <div class="col-md-6">
+                                              <div class="form-floating mb-3 mb-md-0">
+                                                  <input class="form-control" id="inputPassword" type="password"
+                                                  name="password"
+                                                  value={this.state.password}
+                                                  onChange={this.onChangePassword}
+                                                  placeholder="Create a password" />
+                                                  <label for="inputPassword">Password</label>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="mt-4 mb-0">
+                                          <div class="d-grid"> <button onClick={this.handleRegister}
+                                             ref={(c) => {
+                                               this.form = c;
+                                                    }}  >Create account</button></div>
+                                      </div>
+                                  </form>
+                              </div>
+                              <div class="card-footer text-center py-3">
+                                  <div class="small"><a href="/login">Have an account? Go to login</a></div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
               </div>
-            }
-
-            <CheckButton
-              style={{ display: "none" }}
-              ref={(c) => {
-                this.checkBtn = c;
-              }}
-            />
-          </Form>
-        </div>
+          </main>
+      </div>
+       
       </div>
     );
   }

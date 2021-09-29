@@ -30,7 +30,15 @@ class ContactService {
     }
     async save(data){
         console.log(data);
-        return await axios.put(API_URL+`contact`, data);
+        return await axios.put(API_URL+`contact`, data, {
+            params: {
+              
+            },
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          })
     }
 
 }

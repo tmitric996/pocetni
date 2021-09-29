@@ -10,14 +10,10 @@ import com.example.proba.repository.NumberRepository;
 import com.example.proba.repository.UserRepository;
 import com.example.proba.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,8 +30,9 @@ public class ContactServiceImpl implements ContactService {
     AuthServiceImpl authService;
 
     public List<Contact> findAllByUser(String token) {
-
-        return contactRepository.findAllByUser(authService.getCurrentUSerByToken(token));
+        List<Contact> contacts = contactRepository.findAllByUser(authService.getCurrentUSerByToken(token));
+        
+        return contacts;
     }
 
     public List<Contact> findAllFavoritesByUser(String email) {
@@ -74,6 +71,7 @@ public class ContactServiceImpl implements ContactService {
         System.out.println(contact);
         Contact c = contactRepository.getById(contact.getId());
         c.setNumber(contact.getNumber());
+        //byte[] f = contact.getPicture();
         c.setPicture(contact.getPicture());
         c.setName(contact.getName());
         c.setFavorite(contact.isFavorite());
@@ -91,7 +89,9 @@ public class ContactServiceImpl implements ContactService {
       return contactRepository.findById(Long.parseLong(id)).orElse(null);
     }
 
-    public Contact addContact(String email, String name, String lastName, String nickName, boolean favorite, String number, MultipartFile[] picture) {
+
+    public Contact addContact(String email, String name, String lastName, String nickName, boolean favorite, String number, final MultipartFile[] picture) throws IOException {
+
         Contact c = new Contact();
         c.setFavorite(favorite);
         c.setName(name);
@@ -105,14 +105,26 @@ public class ContactServiceImpl implements ContactService {
         List<Number> numbers = new ArrayList<>();
         numbers.add(num);
         c.setNumber(numbers);
+        if (picture!=null){
+            c.setPicture(picture[0].getBytes());}
+        return contactRepository.save(c);
+    }
 
-        try {
-            for ( final MultipartFile file : picture ){
-            c.setPicture(file.getBytes());}
-        } catch (IOException e) {
-            System.out.println("usao u exception");
-            e.printStackTrace();
-        }
+    public Contact saveContact(String id, String email, String name, String lastName, String nickName, boolean favorite, String number,final MultipartFile[] picture) throws IOException {
+        Contact c = contactRepository.findById(Long.parseLong(id)).orElse(null);
+        c.setFavorite(favorite);
+        c.setName(name);
+        c.setLastName(lastName);
+        c.setNickName(nickName);
+
+        Number num = new Number();
+        num.setNumber(number);
+        numberRepository.save(num);
+        List<Number> numbers = new ArrayList<>();
+        numbers.add(num);
+        c.setNumber(numbers);
+        if (picture!=null){
+        c.setPicture(picture[0].getBytes());}
         return contactRepository.save(c);
     }
 }

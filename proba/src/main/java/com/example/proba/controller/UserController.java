@@ -89,16 +89,22 @@ public class UserController {
 	public Contact add( @RequestParam String name,
 					   	@RequestParam String lastName,@RequestParam String nickName,
 					   	@RequestParam String number,@RequestParam boolean favorite,
-						@RequestParam("picture") final MultipartFile[] picture,
+						@RequestParam(required = false) final  MultipartFile[] picture,
 						@RequestParam String email) throws IOException {
-		System.out.println(picture[0]);
+		
 		System.out.println("usao u contactuser controler");
-		return  contactSevice.addContact(email, name, lastName, nickName, favorite, number, picture);
+
+		Contact c = this.contactSevice.addContact(email, name, lastName, nickName, favorite, number, picture);
+		return  c;
 	}
 	@PutMapping("/contact")
-	public Contact add(@RequestBody Contact contact){
+	public Contact add( @RequestParam String name,
+						@RequestParam String lastName,@RequestParam String nickName,
+						@RequestParam String number,@RequestParam boolean favorite,
+						@RequestParam(required = false) final  MultipartFile[] picture,
+						@RequestParam String email, @RequestParam String id) throws IOException {
 		System.out.println("usao u pot contact");
-		return  contactSevice.saveContact(contact);
+		return  contactSevice.saveContact(id, email, name, lastName, nickName, favorite, number, picture);
 	}
 	@DeleteMapping("/contact/{id}")
 	public void deleteContact(@PathVariable String id) {

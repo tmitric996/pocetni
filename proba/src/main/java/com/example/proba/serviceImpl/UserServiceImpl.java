@@ -78,7 +78,6 @@ public class UserServiceImpl implements UserService{
 	}
 	@Override
 	public User enableUser(String userId) {
-		System.out.println(userId);
 		User u = userRepository.findById(Long.parseLong(userId)).orElse(null);
 		u.setEnabled(true);
 		userRepository.save(u);

@@ -58,9 +58,7 @@ public class ContactServiceImpl implements ContactService {
         }
         contact.setNumber(numbers);
         MultipartFile f = contactRequest.getPicture();
-        System.out.println(f);
 
-        System.out.println(f.getBytes());
         contact.setPicture(f.getBytes());
         contact.setNickName(contactRequest.getNickName());
         return contactRepository.save(contact);
@@ -68,7 +66,6 @@ public class ContactServiceImpl implements ContactService {
     }
 
     public Contact saveContact(Contact contact) {
-        System.out.println(contact);
         Contact c = contactRepository.getById(contact.getId());
         c.setNumber(contact.getNumber());
         //byte[] f = contact.getPicture();

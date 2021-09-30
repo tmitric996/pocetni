@@ -4,6 +4,7 @@ import { Switch, Route, Link } from "react-router-dom";
 import Register from "./components/register.compoonent";
 import Login from "./components/login.component";
 import Home from "./components/home.component";
+import AddContact from "./components/addContact.component";
 import AuthService from "./services/auth.service";
 import AccountCircleOutlined from '@material-ui/icons/AccountCircleOutlined';
 
@@ -76,6 +77,7 @@ class App extends Component {
                           <Route exact path="/register" component={Register} />
                           <Route exact path="/login" component={Login} />
                           <Route exact path="/home" component={Home} />
+                          <Route exact path="/addContact/:id" component={AddContact} />
                         </Switch>
                             
                         

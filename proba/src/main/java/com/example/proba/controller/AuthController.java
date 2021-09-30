@@ -36,12 +36,10 @@ public class AuthController {
 
 	@GetMapping("/token")
 	public User getUserByToken(@RequestParam final String token){
-		System.out.println(authService.getCurrentUSerByToken(token));
 		return  authService.getCurrentUSerByToken(token);
 	}
 	@GetMapping("/current")
 	public User getUser(@RequestHeader Map<String, String> headers){
-		System.out.println(headers.get("authorization").toString().split("\"")[1]);
 		return  authService.getCurrentUSerByToken(headers.get("authorization").toString().split("\"")[1]);
 	}
 }

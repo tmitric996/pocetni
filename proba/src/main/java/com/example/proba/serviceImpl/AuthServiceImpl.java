@@ -62,9 +62,9 @@ public class AuthServiceImpl {
 
 
 	public User getCurrentUSerByToken(String token) {
-		System.out.println(token);
+
 		String email = tokenUtils.getUsernameFromToken(token);
-		System.out.println(email);
+
 		User user = userService.findByEmail(email);
 		return user;
 	}

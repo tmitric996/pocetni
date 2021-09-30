@@ -82,6 +82,9 @@ header .logo img {
   max-height: 40px;
 }
 
+table[class="table table-bordered table-hover table-striped dataTable"]{
+  background-image: linear-gradient(to left, rgba(30, 67, 86, 0.8), rgb(182, 182, 80));
+}
 main {
   margin-top: 80px;
   background-image: linear-gradient(to right, rgba(30, 67, 86, 0.8), rgb(182, 182, 80));
@@ -331,8 +334,8 @@ sup {
 }
 
 a {
-  color: #0d6efd;
-  text-decoration: underline;
+  color: black;
+  text-decoration: solid;
 }
 a:hover {
   color: #0a58ca;
@@ -424,7 +427,9 @@ th {
   border-style: solid;
   border-width: 0;
 }
-
+div[data-test="datatable-select"] label{
+  font-size: 0px;
+}
 label {
   display: inline-block;
 }

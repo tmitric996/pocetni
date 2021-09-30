@@ -52,7 +52,7 @@ public class UserController {
 	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/user/{id}") // da bude za brisanje usera koji ne dobiju enable
 	public void delete(@PathVariable String id) {
-		System.out.println(id);
+
 		userService.delete(id);
 		return;
 	}
@@ -65,7 +65,6 @@ public class UserController {
 	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/users/toenable")
 	public List<User> getAllForEnable(){
-		System.out.println("usao u controller");
 		return  userService.getAllForEnable();
 	}
 
@@ -91,8 +90,6 @@ public class UserController {
 					   	@RequestParam String number,@RequestParam boolean favorite,
 						@RequestParam(required = false) final  MultipartFile[] picture,
 						@RequestParam String email) throws IOException {
-		
-		System.out.println("usao u contactuser controler");
 
 		Contact c = this.contactSevice.addContact(email, name, lastName, nickName, favorite, number, picture);
 		return  c;
@@ -103,7 +100,7 @@ public class UserController {
 						@RequestParam String number,@RequestParam boolean favorite,
 						@RequestParam(required = false) final  MultipartFile[] picture,
 						@RequestParam String email, @RequestParam String id) throws IOException {
-		System.out.println("usao u pot contact");
+
 		return  contactSevice.saveContact(id, email, name, lastName, nickName, favorite, number, picture);
 	}
 	@DeleteMapping("/contact/{id}")

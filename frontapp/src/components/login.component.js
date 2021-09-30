@@ -44,7 +44,6 @@ class Login extends Component {
             );
             localStorage.setItem("email",this.state.email);
           }
-          // this.props.history.push("/profile");
           window.location.href = "http://localhost:3000/home";
         },
         (error) => {
